@@ -13,19 +13,17 @@ YUI.add("jsml", function(Y) {
             case Object:
               for (var tag in node) if (node.hasOwnProperty(tag)) { node = node[tag]; break; }
               tag = document.createElement(tag);
-              if (node) {
-                if (typeof node == "object") {
-                  if (node.constructor == Object) {
-                    var attrs = node;
-                    node = undefined;
-                  } else if (node.constructor == Array && typeof node[1] == "object" && node[1] && node[1].constructor == Array) {
-                    var attrs = node[0];
-                    node = node[1];
-                  } else {
-                    var attrs = undefined;
-                  }
-                  for (var attr in attrs) if (attrs.hasOwnProperty(attr)) tag[attr] = attrs[attr];
+              if (node && typeof node == "object") {
+                if (node.constructor == Object) {
+                  var attrs = node;
+                  node = undefined;
+                } else if (node.constructor == Array && typeof node[1] == "object" && node[1] && node[1].constructor == Array) {
+                  var attrs = node[0];
+                  node = node[1];
+                } else {
+                  var attrs = undefined;
                 }
+                for (var attr in attrs) if (attrs.hasOwnProperty(attr)) tag[attr] = attrs[attr];
               }
               parent = parent ? parent.appendChild(tag) : tag;
               if (node) Y.jsml(node, parent);
