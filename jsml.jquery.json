@@ -1,6 +1,6 @@
 {
   "name": "jsml",
-  "title": "jQuery JSON table",
+  "title": "jsml",
   "description": "jQuery plugin for generating DOM structures concisely.",
   "keywords": ["markup", "dom", "ui"],
   "version": "0.1.0",
