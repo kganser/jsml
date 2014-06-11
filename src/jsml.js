@@ -2,7 +2,7 @@
 // MIT Licensed, with this copyright and permission notice
 // <http://opensource.org/licenses/MIT>
 
-kernel.add('jsml', function() {
+(window.kernel || {add: function(name, module) { window[name] = module(); }}).add('jsml', function() {
 
   var jsml, attr = function(node, parent) {
     Object.keys(node).forEach(function(k) {
