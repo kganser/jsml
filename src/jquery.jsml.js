@@ -19,26 +19,28 @@
     switch (typeof node) {
       case 'object': // Object, Array, or null
         if (!node) return;
-        if (Array.isArray(node))
-          return node.map(function(node) { return $.jsml(node, parent); });
+        if (Array.isArray(node)) {
+          node.forEach(function(node) { $.jsml(node, parent); });
+          return parent;
+        }
         var tag = Object.keys(node)[0],
             elem = document.createElement(tag);
+        if (parent) parent.appendChild(elem); 
         node = node[tag];
-        children = $.jsml(typeof node == 'object' && node && !Array.isArray(node) ? attr(node, elem) : node, elem);
-        if (Array.isArray(children))
-          children.forEach(function(child) { if (child) elem.appendChild(child); });
-        else if (children)
-          elem.appendChild(children);
+        $.jsml(typeof node == 'object' && node && !Array.isArray(node) ? attr(node, elem) : node, elem);
         return elem;
       case 'function':
         return $.jsml(node(parent), parent);
       case 'string':
       case 'number':
-        return document.createTextNode(node);
+        node = document.createTextNode(node);
+        return parent ? parent.appendChild(node) : node;
     }
   };
   
   $.fn.jsml = function(node) {
-    this.append($.jsml(node));
+    return this.each(function() {
+      $.jsml(node, this);
+    });
   };
 })(jQuery);
