@@ -8,7 +8,7 @@
     Object.keys(node).forEach(function(k) {
       if (k == 'children') return;
       var n = node[k];
-      if (!parent.hasOwnProperty(k) || typeof n != 'object' || n == null)
+      if (typeof parent[k] == 'undefined' || typeof n != 'object' || n == null)
         return parent[k] = n;
       attr(n, parent[k], true);
     });
