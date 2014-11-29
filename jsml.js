@@ -2,7 +2,7 @@
 // MIT Licensed, with this copyright and permission notice
 // <http://opensource.org/licenses/MIT>
 
-(window.kernel || {add: function(name, module) { window[name] = module(); }}).add('jsml', function() {
+var jsml = function() {
 
   var jsml, attr = function(node, parent) {
     Object.keys(node).forEach(function(k) {
@@ -38,4 +38,4 @@
         return parent ? parent.appendChild(node) : node;
     }
   };
-});
+}();
