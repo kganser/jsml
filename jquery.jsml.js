@@ -15,7 +15,8 @@
     return node.children;
   };
   
-  $.jsml = function(node, parent) {
+  $.jsml = function(node, parent, clear) {
+    if (clear && parent) while (parent.firstChild) parent.removeChild(parent.firstChild);
     switch (typeof node) {
       case 'object': // Object, Array, or null
         if (!node) return;
