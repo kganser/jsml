@@ -5,19 +5,19 @@
     <meta charset="utf-8">
     <meta name="description" content="A concise specification for dynamic DOM construction using javascript objects.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <link rel="canonical" href="http://jsml.kganser.com">
-    <link rel="stylesheet" href="http://kganser.com/css/common.css">
-    <link rel="stylesheet" href="http://kganser.com/css/prettify.css">
+    <link rel="canonical" href="https://jsml.kganser.com">
+    <link rel="stylesheet" href="//kganser.com/css/common.css">
+    <link rel="stylesheet" href="//kganser.com/css/prettify.css">
   </head>
   <body>
-    <a href="http://kganser.com">kganser.com</a>
-    <h1>jsml <a href="http://plugins.jquery.com/jsml/" target="_blank" class="jquery">available for <em>jQuery</em></a></h1>
+    <a href="//kganser.com">kganser.com</a>
+    <h1>jsml <a href="https://plugins.jquery.com/jsml/" target="_blank" class="jquery">available for <em>jQuery</em></a></h1>
     <p>Jsml (<em>javascript markup language</em>) is a concise way of generating pieces of the DOM dynamically. If you've ever tried to build up a chunk of the DOM using the browser's DOM API, you know that the resulting code is repetitive and hard to read:</p>
     <pre class="prettyprint">
 var div = document.createElement('div');
 div.appendChild(document.createTextNode("Don't click "));
 var a = document.createElement('a');
-a.href = 'http://kganser.com';
+a.href = 'https://kganser.com';
 a.onclick = function(e) { e.preventDefault(); alert('You Clicked!'); };
 a.appendChild(document.createTextNode('here'));
 div.appendChild(a);
@@ -27,7 +27,7 @@ document.body.appendChild(div);</pre>
 $(document.body).jsml({div: [
   "Don't click ",
   {a: {
-    href: 'http://kganser.com',
+    href: 'https://kganser.com',
     onclick: function(e) { e.preventDefault(); alert('You Clicked!'); },
     children: 'here'
   }}
@@ -88,8 +88,8 @@ $(document.body).jsml({div: function(elem) {
   return 'loading...';
 }});</pre>
     <p>This is just one example of the benefits of leveraging pure javascript and its runtime environment (i.e., the event loop, closures, and lexical scoping) to generate both the markup and functionality of an application. Numerous frameworks (including those intended to run client-side) seek to separate logic from data in application development, creating templating languages with ungainly, ad-hoc syntaxes that re-implement the simplest features of a programming language. The result is slower, more complex and bloated applications with more global variables and an added learning curve. Rather than separate the two or try to insert logic into DOM markup, jsml represents DOM data naturally as a subset of the programming language, allowing entire applications to be written as a single javascript expression.</p>
-    <a class="git-banner" href="http://github.com/kganser/jsml"></a>
-    <script src="http://kganser.com/js/common.js"></script>
-    <script src="http://kganser.com/js/prettify.js"></script>
+    <a class="git-banner" href="https://github.com/kganser/jsml"></a>
+    <script src="//kganser.com/js/common.js"></script>
+    <script src="//kganser.com/js/prettify.js"></script>
   </body>
 </html>
