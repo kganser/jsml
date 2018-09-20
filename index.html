@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+    <title>jsml</title>
+    <meta charset="utf-8">
+    <meta name="description" content="A concise specification for dynamic DOM construction using javascript objects.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="canonical" href="http://jsml.kganser.com">
+    <link rel="stylesheet" href="http://kganser.com/css/common.css">
+    <link rel="stylesheet" href="http://kganser.com/css/prettify.css">
+  </head>
+  <body>
+    <a href="http://kganser.com">kganser.com</a>
+    <h1>jsml <a href="http://plugins.jquery.com/jsml/" target="_blank" class="jquery">available for <em>jQuery</em></a></h1>
+    <p>Jsml (<em>javascript markup language</em>) is a concise way of generating pieces of the DOM dynamically. If you've ever tried to build up a chunk of the DOM using the browser's DOM API, you know that the resulting code is repetitive and hard to read:</p>
+    <pre class="prettyprint">
+var div = document.createElement('div');
+div.appendChild(document.createTextNode("Don't click "));
+var a = document.createElement('a');
+a.href = 'http://kganser.com';
+a.onclick = function(e) { e.preventDefault(); alert('You Clicked!'); };
+a.appendChild(document.createTextNode('here'));
+div.appendChild(a);
+document.body.appendChild(div);</pre>
+    <p>The same structure can be generated using jsml as follows:</p>
+    <pre class="prettyprint">
+$(document.body).jsml({div: [
+  "Don't click ",
+  {a: {
+    href: 'http://kganser.com',
+    onclick: function(e) { e.preventDefault(); alert('You Clicked!'); },
+    children: 'here'
+  }}
+]});</pre>
+    <h2>Production rules</h2>
+    <pre>
+<strong>node</strong> = <strong>object</strong>
+     | <strong>nonobject</strong>
+<strong>object</strong> = {<em>tagname</em>: <strong>nonobject</strong>}
+       | {<em>tagname</em>: {<strong>property</strong>, ...}}
+<strong>property</strong> = <em>attribute</em>: <em>value</em>
+         | children: <strong>node</strong>
+<strong>nonobject</strong> = [<strong>node</strong>, ...]
+          | <em>function</em>
+          | <em>string</em>
+          | <em>number</em></pre>
+    <p>An element <code>object</code> is specified with a single key and value. The key is the element's <em>tagname</em>, and its value is either a <code>nonobject</code> specifying its contents or an object with its recursively addressable attributes, where key "<code>children</code>" specifies any contents. Other data types specified for <code>node</code> are ignored.</p>
+    <h3>Examples</h3>
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>jsml</th>
+            <th>html</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><pre class="prettyprint">{div: null}</pre></td>
+            <td><pre class="prettyprint">&lt;div>&lt;/div></pre></td>
+          </tr>
+          <tr>
+            <td><pre class="prettyprint">{div: 'hello'}</pre></td>
+            <td><pre class="prettyprint">&lt;div>hello&lt;/div></pre></td>
+          </tr>
+          <tr>
+            <td><pre class="prettyprint">{div: {<br>  style: {backgroundColor: 'red'},<br>  children: 'world'<br>}}</pre></td>
+            <td><pre class="prettyprint">&lt;div style="background-color: red">world&lt;/div></pre></td>
+          </tr>
+          <tr>
+            <td><pre class="prettyprint">{ul: {<br>  className: 'list',<br>  children: [<br>    {li: 'hello'},<br>    {li: 'world'}<br>  ]<br>}}</pre></td>
+            <td><pre class="prettyprint">&lt;ul class="list"><br>  &lt;li>hello&lt;/li><br>  &lt;li>world&lt;/li><br>&lt;/ul></pre></td>
+          </tr>
+          <tr>
+            <td><pre class="prettyprint">{div: function(elem) {<br>  elem.innerHTML = 'hello, world';<br>}}</pre></td>
+            <td><pre class="prettyprint">&lt;div>hello, world&lt;/div></pre></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Leveraging Javascript</h2>
+    <p>The last example uses a function to populate the parent element, which is passed in by the jsml renderer as it traverses the structure. The function can also synchronously return a jsml structure on which the renderer will continue to operate. This allows you to intercept pointers to the elements as they are generated, which is particularly useful for asynchronous operations:</p>
+    <pre class="prettyprint">
+$(document.body).jsml({div: function(elem) {
+  setTimeout(function() {
+    elem.innerHTML = 'done!';
+  }, 1000);
+  return 'loading...';
+}});</pre>
+    <p>This is just one example of the benefits of leveraging pure javascript and its runtime environment (i.e., the event loop, closures, and lexical scoping) to generate both the markup and functionality of an application. Numerous frameworks (including those intended to run client-side) seek to separate logic from data in application development, creating templating languages with ungainly, ad-hoc syntaxes that re-implement the simplest features of a programming language. The result is slower, more complex and bloated applications with more global variables and an added learning curve. Rather than separate the two or try to insert logic into DOM markup, jsml represents DOM data naturally as a subset of the programming language, allowing entire applications to be written as a single javascript expression.</p>
+    <a class="git-banner" href="http://github.com/kganser/jsml"></a>
+    <script src="http://kganser.com/js/common.js"></script>
+    <script src="http://kganser.com/js/prettify.js"></script>
+  </body>
+</html>
